@@ -30,7 +30,6 @@ const cartSlice = createSlice({
       const existing = state.items.find((i) => i.id === action.payload);
       if (existing) existing.qty += 1;
     },
-
     decreaseQty: (state, action: PayloadAction<Id>) => {
       const existing = state.items.find((i) => i.id === action.payload);
       if (!existing) return;

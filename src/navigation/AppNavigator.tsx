@@ -98,6 +98,11 @@ export default function AppNavigator() {
           component={DetailScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="Cart"
+          component={CartScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -14,4 +14,11 @@ export type CoffeeItemsType = {
 export type RootStackParamList = {
   Home: undefined;
   Detail: { item: CoffeeItemsType };
+  Cart: undefined;
 };
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends RootStackParamList {}
+  }
+}

@@ -17,7 +17,12 @@ import { useNavigation } from "@react-navigation/native";
 import { themeColors } from "../theme";
 import Feather from "@expo/vector-icons/Feather";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addItem, decreaseQty, increaseQty } from "../store/reducers/CartSlice";
+import {
+  addItem,
+  decreaseQty,
+  increaseQty,
+  removeItem,
+} from "../store/reducers/CartSlice";
 
 const windowWidth = Dimensions.get("window").width;
 const BG_IMAGE_HEIGHT = windowWidth * 0.75;
@@ -40,7 +45,7 @@ export default function DetailScreen({ route }: Props) {
     state.cart.items.find((i) => i.id === item.id)
   );
 
-  const qty = cartItem?.qty ?? 1;
+  const qty = cartItem?.qty ?? 0;
   return (
     <View className="flex-1 bg-white ">
       <StatusBar hidden />
@@ -159,7 +164,7 @@ export default function DetailScreen({ route }: Props) {
                 hitSlop={10}
                 className="p-1"
                 onPress={() => {
-                  if (qty > 1) {
+                  if (qty > 0) {
                     dispatch(decreaseQty(item.id));
                   }
                 }}
@@ -207,17 +212,24 @@ export default function DetailScreen({ route }: Props) {
             <TouchableOpacity
               className="bg-primary flex-1 ml-4 rounded-full p-4"
               onPress={() => {
-                dispatch(
-                  addItem({
-                    id: item.id,
-                    name: item.name,
-                    price: item.price,
-                    volume: item.volume,
-                    image: item.image,
-                    stars: item.stars,
-                    desc: item.desc,
-                  })
-                );
+                // Sepette yoksa 1 adet ekle
+                if (!cartItem) {
+                  dispatch(
+                    addItem({
+                      id: item.id,
+                      name: item.name,
+                      price: item.price,
+                      volume: item.volume,
+                      image: item.image,
+                      stars: item.stars,
+                      desc: item.desc,
+                    })
+                  );
+                }
+                // Sonrasında Sepet/Checkout'a git
+                navigation.navigate("Cart"); // varsa Cart
+                // veya:
+                // navigation.navigate("Checkout");
               }}
             >
               <Text className="text-center text-white font-semibold text-base">
